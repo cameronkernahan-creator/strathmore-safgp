@@ -1066,6 +1066,161 @@ body {
 .rsvp-body a {
   border-bottom-color: #CDAA8B !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Mobile responsive refinements
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  /* Tighter section rhythm on phones */
+  .sec {
+    padding: clamp(64px, 9vh, 96px) clamp(20px, 5vw, 32px);
+  }
+  .sec.tight {
+    padding: clamp(48px, 7vh, 72px) clamp(20px, 5vw, 32px);
+  }
+  .sec.edge-rule::before {
+    left: clamp(20px, 5vw, 32px);
+    right: clamp(20px, 5vw, 32px);
+  }
+  .closing-section {
+    padding: clamp(72px, 10vh, 120px) clamp(20px, 5vw, 32px);
+  }
+  .colophon {
+    padding: 36px clamp(20px, 5vw, 32px) 32px;
+    line-height: 2.2;
+  }
+
+  /* Hero — looser stacking, tighter padding */
+  .hero {
+    padding: clamp(20px, 4vw, 32px) clamp(20px, 5vw, 32px);
+  }
+  .hero-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .hero-brand-row {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    font-size: 10.5px;
+    line-height: 1.5;
+  }
+  .hero-brand-row .divider {
+    display: none;
+  }
+  .hero-meta {
+    font-size: 10.5px;
+  }
+  .hero-center {
+    padding-top: 4vh;
+  }
+  .hero-eyebrow {
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-size: clamp(44px, 11.5vw, 72px);
+    line-height: 0.98;
+  }
+  .cover-address {
+    font-size: clamp(17px, 4.4vw, 22px);
+    margin-bottom: 20px;
+  }
+  .cover-date-band {
+    margin-top: 22px;
+    padding-top: 18px;
+    gap: 10px 18px;
+  }
+  .cover-date {
+    font-size: clamp(19px, 4.6vw, 24px);
+  }
+  .cover-date-meta {
+    font-size: 10.5px;
+    letter-spacing: 0.24em;
+  }
+  .hero-bottom {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Section headings — softer minimums for narrow screens */
+  .display.h2 {
+    font-size: clamp(34px, 8.6vw, 56px);
+  }
+  .quote-lead {
+    font-size: clamp(26px, 7.4vw, 38px);
+    max-width: none;
+  }
+
+  /* Body copy a touch smaller on phones */
+  .body {
+    font-size: 15.5px;
+  }
+  .body.body-lead {
+    font-size: 17px;
+  }
+
+  /* Bleed image captions — stack instead of split across the image */
+  .bleed .caption {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    bottom: 18px !important;
+    left: 20px !important;
+    right: 20px !important;
+    font-size: 10.5px;
+    letter-spacing: 0.24em;
+  }
+  figure.bleed {
+    height: clamp(280px, 56vh, 480px) !important;
+  }
+
+  /* Timeline — tighter gap on phones (overrides inline style) */
+  .timeline-grid {
+    gap: 32px !important;
+  }
+
+  /* Letter signatures stack cleanly */
+  .signatures-row {
+    margin-top: 36px;
+    padding-top: 20px;
+  }
+
+  /* Closing — stacked signatures and tighter RSVP */
+  .closing-line {
+    font-size: clamp(24px, 6.8vw, 38px);
+    margin-top: 24px;
+  }
+  .closing-signatures {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding-top: 28px;
+  }
+  .rsvp {
+    padding: 24px 22px;
+  }
+  .rsvp-body {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-title {
+    font-size: clamp(38px, 12.5vw, 56px);
+  }
+  .display.h2 {
+    font-size: clamp(30px, 9.2vw, 44px);
+  }
+  .quote-lead {
+    font-size: clamp(24px, 7.8vw, 32px);
+  }
+  .closing-line {
+    font-size: clamp(22px, 7vw, 32px);
+  }
+  .colophon .divider-dot {
+    margin: 0 6px;
+  }
+}
 </style>
 </head>
 <body>
@@ -1257,7 +1412,7 @@ body {
       <div class="eyebrow" data-rv>The Timeline</div>
       <h2 class="display h2" data-rv style="--d:60ms; margin-top:14px;">From content capture to <em>global release</em>.</h2>
     </div>
-    <div style="max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 48px;">
+    <div class="timeline-grid" style="max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 48px;">
       <div data-rv style="--d:140ms">
         <div class="eyebrow">Phase One</div>
         <h3 class="display" style="font-size: clamp(1.6rem, 2.4vw, 2rem); margin-top: 12px;">Content Capture</h3>
