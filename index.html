@@ -1068,6 +1068,151 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   High-end editorial refinements
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Section opener — small gold rule sitting above the eyebrow */
+.eyebrow-opener {
+  position: relative;
+  padding-top: 22px;
+  display: inline-block;
+}
+.eyebrow-opener::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.85;
+}
+.eyebrow-opener--center {
+  display: block;
+  padding-top: 26px;
+}
+.eyebrow-opener--center::before {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Drop cap on the lead paragraph — magazine cue */
+.has-dropcap::first-letter {
+  font-family: 'FreightNeo', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 4em;
+  line-height: 0.85;
+  float: left;
+  margin: 4px 14px -2px 0;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+}
+
+/* Bleed figures — class-based replacement for inline styles, plus a soft tonal vignette and Plate caption */
+.bleed-figure {
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 70vh, 720px);
+  overflow: hidden;
+}
+.bleed-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bleed-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(0,0,0,.6) 100%),
+    radial-gradient(140% 90% at 50% 28%, rgba(0,0,0,0) 0%, rgba(0,0,0,.32) 100%);
+}
+.bleed-caption {
+  position: absolute;
+  bottom: clamp(20px, 3vw, 36px);
+  left: clamp(28px, 6vw, 96px);
+  right: clamp(28px, 6vw, 96px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,.6);
+}
+.bleed-caption-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  line-height: 1.55;
+}
+
+/* Plate label — gold eyebrow with editorial tick */
+.plate-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 450;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 2px 10px rgba(0,0,0,.6);
+}
+.plate-label::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.9;
+}
+
+/* RSVP corner ticks — invitation-card frame */
+.rsvp { position: relative; }
+.corner-tick {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 0 solid var(--gold);
+  pointer-events: none;
+  opacity: 0.7;
+}
+.corner-tick--tl { top: 8px;    left: 8px;    border-top-width: 1px;    border-left-width: 1px; }
+.corner-tick--tr { top: 8px;    right: 8px;   border-top-width: 1px;    border-right-width: 1px; }
+.corner-tick--bl { bottom: 8px; left: 8px;    border-bottom-width: 1px; border-left-width: 1px; }
+.corner-tick--br { bottom: 8px; right: 8px;   border-bottom-width: 1px; border-right-width: 1px; }
+
+/* End-mark — book-style chapter close ornament */
+.end-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: clamp(24px, 4vh, 36px) auto 0;
+  width: fit-content;
+}
+.end-mark-rule {
+  width: 56px;
+  height: 1px;
+  background: rgba(205,170,139,.45);
+}
+.end-mark-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(205,170,139,.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
    Mobile responsive refinements
    ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 720px) {
@@ -1160,19 +1305,34 @@ body {
   }
 
   /* Bleed image captions — stack instead of split across the image */
-  .bleed .caption {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 4px !important;
+  .bleed-caption {
     bottom: 18px !important;
     left: 20px !important;
     right: 20px !important;
-    font-size: 10.5px;
-    letter-spacing: 0.24em;
+    gap: 10px !important;
+  }
+  .bleed-caption-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .plate-label {
+    font-size: 9.5px;
+    letter-spacing: 0.3em;
+  }
+  .plate-label::before {
+    width: 22px;
   }
   figure.bleed {
     height: clamp(280px, 56vh, 480px) !important;
   }
+  .has-dropcap::first-letter {
+    font-size: 3.4em;
+    margin: 4px 10px -2px 0;
+  }
+  .end-mark-rule { width: 40px; }
 
   /* Timeline — tighter gap on phones (overrides inline style) */
   .timeline-grid {
@@ -1271,13 +1431,13 @@ body {
   <div class="container">
     <div class="grid-2 align-center">
       <div>
-        <div class="eyebrow" data-rv>I &middot; The Letter</div>
+        <div class="eyebrow eyebrow-opener" data-rv>I &middot; The Letter</div>
         <h2 class="display quote-lead" data-rv style="--d:80ms">
           A select group of homes. <em>One story.</em>
         </h2>
       </div>
       <div class="stack-md">
-        <p class="body body-lead" data-rv style="--d:120ms">
+        <p class="body body-lead has-dropcap" data-rv style="--d:120ms">
           On the 1st of July 2026, we launch South Africa | Forbes Global Properties &mdash; the exclusive real estate partner of Forbes Media in South Africa.
         </p>
         <p class="body" data-rv style="--d:200ms">
@@ -1307,7 +1467,7 @@ body {
   <div class="container">
     <div class="grid-2">
       <div>
-        <div class="eyebrow" data-rv>II &middot; The Launch</div>
+        <div class="eyebrow eyebrow-opener" data-rv>II &middot; The Launch</div>
         <h2 class="display h2" data-rv style="--d:60ms">Forbes Global Properties. <em>South Africa.</em></h2>
       </div>
       <div class="stack-md">
@@ -1329,11 +1489,15 @@ body {
 <!-- ═══════════════════════════════════════════════════════════════
      BLEED — STRATHMORE
      ═══════════════════════════════════════════════════════════════ -->
-<figure class="bleed" data-rv-clip style="position:relative; width:100%; height:clamp(340px, 70vh, 720px); overflow:hidden;">
-  <img src="pool-apostles.png" alt="Pool deck with Twelve Apostles view" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-  <figcaption class="caption" style="position:absolute; bottom:clamp(20px, 3vw, 36px); left:clamp(28px, 6vw, 96px); right:clamp(28px, 6vw, 96px); display:flex; justify-content:space-between; align-items:flex-end; gap:24px; color:#fff; text-shadow: 0 2px 12px rgba(0,0,0,.6);">
-    <span>Strathmore Avenue &middot; Camps Bay &middot; Atlantic Seaboard</span>
-    <span>Views to the Twelve Apostles</span>
+<figure class="bleed bleed-figure" data-rv-clip>
+  <img src="pool-apostles.png" alt="Pool deck with Twelve Apostles view" class="bleed-img">
+  <span class="bleed-vignette" aria-hidden="true"></span>
+  <figcaption class="bleed-caption">
+    <div class="plate-label">Plate I</div>
+    <div class="bleed-caption-row">
+      <span>Strathmore Avenue &middot; Camps Bay &middot; Atlantic Seaboard</span>
+      <span>Views to the Twelve Apostles</span>
+    </div>
   </figcaption>
 </figure>
 
@@ -1345,7 +1509,7 @@ body {
   <div class="container">
     <div class="grid-2">
       <div>
-        <div class="eyebrow" data-rv>III &middot; The Feature</div>
+        <div class="eyebrow eyebrow-opener" data-rv>III &middot; The Feature</div>
         <h2 class="display h2" data-rv style="--d:60ms">A featured home, <em>among a select few.</em></h2>
       </div>
       <div class="stack-md">
@@ -1372,7 +1536,7 @@ body {
   <div class="container">
     <div class="grid-2">
       <div>
-        <div class="eyebrow" data-rv>IV &middot; The Approach</div>
+        <div class="eyebrow eyebrow-opener" data-rv>IV &middot; The Approach</div>
         <h2 class="display h2" data-rv style="--d:60ms">Listed with <em>discretion.</em></h2>
       </div>
       <div class="stack-md">
@@ -1394,11 +1558,15 @@ body {
 <!-- ═══════════════════════════════════════════════════════════════
      BLEED — POOL & PERGOLA
      ═══════════════════════════════════════════════════════════════ -->
-<figure class="bleed" data-rv-clip style="position:relative; width:100%; height:clamp(340px, 70vh, 720px); overflow:hidden;">
-  <img src="pool-pergola.png" alt="Pool, pergola and mountain view" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-  <figcaption class="caption" style="position:absolute; bottom:clamp(20px, 3vw, 36px); left:clamp(28px, 6vw, 96px); right:clamp(28px, 6vw, 96px); display:flex; justify-content:space-between; align-items:flex-end; gap:24px; color:#fff; text-shadow: 0 2px 12px rgba(0,0,0,.6);">
-    <span>Designed for Cape Town light</span>
-    <span>Indoor &mdash; outdoor living</span>
+<figure class="bleed bleed-figure" data-rv-clip>
+  <img src="pool-pergola.png" alt="Pool, pergola and mountain view" class="bleed-img">
+  <span class="bleed-vignette" aria-hidden="true"></span>
+  <figcaption class="bleed-caption">
+    <div class="plate-label">Plate II</div>
+    <div class="bleed-caption-row">
+      <span>Designed for Cape Town light</span>
+      <span>Indoor &mdash; outdoor living</span>
+    </div>
   </figcaption>
 </figure>
 
@@ -1409,7 +1577,7 @@ body {
 <section class="sec tight" style="background: linear-gradient(180deg, #0A0A0A 0%, #0E0E0E 100%);" aria-label="Timeline">
   <div class="container">
     <div style="text-align:center; max-width: 720px; margin: 0 auto 56px;">
-      <div class="eyebrow" data-rv>The Timeline</div>
+      <div class="eyebrow eyebrow-opener eyebrow-opener--center" data-rv>The Timeline</div>
       <h2 class="display h2" data-rv style="--d:60ms; margin-top:14px;">From content capture to <em>global release</em>.</h2>
     </div>
     <div class="timeline-grid" style="max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 48px;">
@@ -1437,8 +1605,13 @@ body {
      CLOSING
      ═══════════════════════════════════════════════════════════════ -->
 <section class="closing-section" id="closing">
-  <p class="eyebrow" data-rv>In Closing</p>
+  <p class="eyebrow eyebrow-opener eyebrow-opener--center" data-rv>In Closing</p>
   <h2 class="display h2" data-rv style="--d:40ms; margin-top:18px;">Quietly. Beautifully. <em>Globally.</em></h2>
+  <div class="end-mark" aria-hidden="true">
+    <span class="end-mark-rule"></span>
+    <span class="end-mark-dot"></span>
+    <span class="end-mark-rule"></span>
+  </div>
   <p class="closing-line" data-rv style="--d:80ms">
     We would be honoured to include Strathmore Avenue among the select group of homes featured within the launch campaign of South Africa | Forbes Global Properties.
   </p>
@@ -1452,6 +1625,10 @@ body {
   </div>
 
   <div class="rsvp" data-rv-scale style="--d:320ms">
+    <span class="corner-tick corner-tick--tl" aria-hidden="true"></span>
+    <span class="corner-tick corner-tick--tr" aria-hidden="true"></span>
+    <span class="corner-tick corner-tick--bl" aria-hidden="true"></span>
+    <span class="corner-tick corner-tick--br" aria-hidden="true"></span>
     <div class="rsvp-label">To Discuss</div>
     <div class="rsvp-body">
       <p>Reply to Keegan directly.</p>
