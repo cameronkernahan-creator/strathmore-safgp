@@ -1587,6 +1587,31 @@ body {
 
 
 <!-- ═══════════════════════════════════════════════════════════════
+     VI — THE FILM
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="sec tight" id="film" aria-label="Forbes Global Properties film">
+  <div class="container">
+    <div style="text-align:center; max-width: 720px; margin: 0 auto 56px;">
+      <div class="eyebrow eyebrow-opener eyebrow-opener--center" data-rv>The Film</div>
+      <h2 class="display h2" data-rv style="--d:60ms; margin-top:14px;">Forbes Global Properties, <em>in motion.</em></h2>
+    </div>
+    <div style="max-width: 1080px; margin: 0 auto;" data-rv data-rv-clip>
+      <div class="video-wrap" data-youtube-id="0TImA0XqERA">
+        <div class="video-placeholder" tabindex="0" role="button" aria-label="Play the Forbes Global Properties film" style="background-image: url('https://i.ytimg.com/vi/0TImA0XqERA/maxresdefault.jpg');">
+          <div class="video-label">A Film by Forbes Global Properties</div>
+          <button class="play-btn" type="button" aria-label="Play film">
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+              <path d="M5 3 L19 11 L5 19 Z" fill="#CDAA8B"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
      CLOSING
      ═══════════════════════════════════════════════════════════════ -->
 <section class="closing-section" id="closing">
@@ -1802,6 +1827,70 @@ body {
   document.querySelectorAll('.video-wrap[data-vimeo-id]').forEach(wrap => {
     const placeholder = wrap.querySelector('.video-placeholder');
     if (placeholder) wirePlaceholder(wrap, placeholder);
+  });
+
+  /* -----------------------------------------------------------
+     YouTube click-to-load, parallel to the Vimeo pattern above.
+     Swaps the placeholder for a youtube-nocookie iframe with
+     autoplay only when the user presses play.
+     ----------------------------------------------------------- */
+  const buildYouTubeIframe = (wrap) => {
+    const id = wrap.dataset.youtubeId;
+    const params = new URLSearchParams({
+      autoplay: '1',
+      rel: '0',
+      modestbranding: '1',
+      playsinline: '1',
+      color: 'white'
+    });
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?${params.toString()}`;
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('title', wrap.querySelector('.video-label')?.textContent || 'Film');
+    return iframe;
+  };
+
+  const loadYouTube = (wrap) => {
+    if (!wrap.dataset.youtubeId) return;
+    const placeholder = wrap.querySelector('.video-placeholder');
+    const iframe = buildYouTubeIframe(wrap);
+    if (placeholder) {
+      placeholder.classList.add('is-loading');
+      setTimeout(() => {
+        placeholder.remove();
+        wrap.appendChild(iframe);
+      }, 180);
+    } else {
+      wrap.appendChild(iframe);
+    }
+  };
+
+  const wireYouTubePlaceholder = (wrap, placeholder) => {
+    placeholder.addEventListener('click', (e) => {
+      e.preventDefault();
+      loadYouTube(wrap);
+    });
+    const btn = placeholder.querySelector('.play-btn');
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        loadYouTube(wrap);
+      });
+    }
+    placeholder.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        loadYouTube(wrap);
+      }
+    });
+  };
+
+  document.querySelectorAll('.video-wrap[data-youtube-id]').forEach(wrap => {
+    const placeholder = wrap.querySelector('.video-placeholder');
+    if (placeholder) wireYouTubePlaceholder(wrap, placeholder);
   });
 })();
 </script>
