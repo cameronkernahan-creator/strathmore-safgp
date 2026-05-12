@@ -24,6 +24,14 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- YouTube CDN preconnects so the film embed loads instantly on click -->
+<link rel="preconnect" href="https://www.youtube-nocookie.com">
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preconnect" href="https://i.ytimg.com" crossorigin>
+<link rel="preconnect" href="https://s.ytimg.com" crossorigin>
+<link rel="preconnect" href="https://yt3.ggpht.com" crossorigin>
+<link rel="dns-prefetch" href="https://googlevideo.com">
 <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300&display=swap" rel="stylesheet">
 
 <style>
@@ -1854,20 +1862,50 @@ body {
 
   const loadYouTube = (wrap) => {
     if (!wrap.dataset.youtubeId) return;
+    if (wrap.dataset.loaded === '1') return;
+    wrap.dataset.loaded = '1';
     const placeholder = wrap.querySelector('.video-placeholder');
     const iframe = buildYouTubeIframe(wrap);
     if (placeholder) {
+      /* Insert the iframe immediately, BEFORE the placeholder in DOM order,
+         so YouTube starts fetching while the placeholder is still fading out.
+         The placeholder is position: absolute and stays visually on top until
+         its opacity transitions to 0. By the time it does, the video is ready. */
+      wrap.insertBefore(iframe, placeholder);
       placeholder.classList.add('is-loading');
-      setTimeout(() => {
-        placeholder.remove();
-        wrap.appendChild(iframe);
-      }, 180);
+      const cleanup = () => { if (placeholder.parentNode) placeholder.remove(); };
+      placeholder.addEventListener('transitionend', cleanup, { once: true });
+      setTimeout(cleanup, 600);
     } else {
       wrap.appendChild(iframe);
     }
   };
 
+  /* Warm the YouTube connection on first hover or focus so the click-to-play
+     handshake is essentially instant. Cheaper than head preconnect for users
+     who never engage with the film. */
+  const warmYouTube = (() => {
+    let warmed = false;
+    return () => {
+      if (warmed) return;
+      warmed = true;
+      ['https://www.youtube-nocookie.com', 'https://i.ytimg.com', 'https://s.ytimg.com'].forEach(href => {
+        const l = document.createElement('link');
+        l.rel = 'preconnect';
+        l.href = href;
+        if (href !== 'https://www.youtube-nocookie.com') l.crossOrigin = 'anonymous';
+        document.head.appendChild(l);
+      });
+    };
+  })();
+
   const wireYouTubePlaceholder = (wrap, placeholder) => {
+    /* Warm DNS / TLS the moment the user signals intent, so the click below
+       hits an already-open connection. */
+    placeholder.addEventListener('pointerenter', warmYouTube, { once: true });
+    placeholder.addEventListener('focusin', warmYouTube, { once: true });
+    placeholder.addEventListener('touchstart', warmYouTube, { once: true, passive: true });
+
     placeholder.addEventListener('click', (e) => {
       e.preventDefault();
       loadYouTube(wrap);
